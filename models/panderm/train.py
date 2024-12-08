@@ -103,8 +103,9 @@ from data.derm_data import DermDatasetQnA
 vision_model, eval_transform = get_encoder(model_name="PanDerm")
 language_model = BertModel.from_pretrained("bert-base-uncased")
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+gpt_decoder = GPT2LMHeadModel.from_pretrained("gpt2")
 
-multimodal_model = MultimodalModel(vision_model=vision_model, language_model=language_model)
+multimodal_model = MultimodalModel(vision_model=vision_model, language_model=language_model, gpt_decoder=gpt_decoder)
 
 ## Prepping data loaders
 # code for dl's here
@@ -174,7 +175,7 @@ rouge_metric = evaluate.load("rouge")
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from transformers import BertTokenizer
+from transformers import BertModel, BertTokenizer, BertConfig, GPT2LMHeadModel
 from datasets import load_metric  # For BLEU and ROUGE
 from tqdm import tqdm
 
@@ -184,7 +185,7 @@ def train(model, dataloader, optimizer, criterion, device):
     model.train()
     total_loss = 0
     for batch in tqdm(dataloader, desc="Training"):
-        image, question, target = batch
+        image, question, target, filename  = batch
         image, target = image.to(device), target.to(device)
 
         # Tokenize the question and target
