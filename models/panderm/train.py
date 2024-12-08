@@ -15,6 +15,14 @@ from builder import get_encoder
 from multimodal import MultimodalModel
 from data.derm_data import DermDatasetQnA
 
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+from transformers import BertModel, BertTokenizer, BertConfig, GPT2LMHeadModel
+from datasets import load_metric  # For BLEU and ROUGE
+from tqdm import tqdm
+
+
 # def train_model(model, train_loader, val_loader, tokenizer, device, num_epochs=5, lr=1e-4):
 #     """
 #     Train and evaluate the multimodal model.
@@ -99,85 +107,7 @@ from data.derm_data import DermDatasetQnA
 #     return model, {"train_loss": train_loss_history, "val_loss": val_loss_history}
 
 
-## Prepping models
-vision_model, eval_transform = get_encoder(model_name="PanDerm")
-language_model = BertModel.from_pretrained("bert-base-uncased")
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-gpt_decoder = GPT2LMHeadModel.from_pretrained("gpt2")
 
-multimodal_model = MultimodalModel(vision_model=vision_model, language_model=language_model, gpt_decoder=gpt_decoder)
-
-## Prepping data loaders
-# code for dl's here
-ham_clean_df = pd.read_csv("../../HAM_clean.csv")
-
-with open('data/questions_diag_mapping.json') as f:
-    questions_diag_mapping = json.load(f)
-    questions_diag_mapping.pop("SCC")
-    questions_diag_mapping.pop("UNK")
-    print(questions_diag_mapping.keys())
-
-root_path = "/mount/studenten-temp1/users/yassir/datasets/HAM10000_clean/ISIC2018/"
-
-percent_data = 1.0
-dataset_train = DermDatasetQnA(df_im=ham_clean_df,
-                            qna_mapping=questions_diag_mapping,
-                            root=root_path,
-                            train=True,
-                            transforms=eval_transform,
-                            data_percent=percent_data)
-dataset_val = DermDatasetQnA(df_im=ham_clean_df,
-                            qna_mapping=questions_diag_mapping,
-                            root=root_path,
-                            val=True,
-                            transforms=eval_transform,)
-dataset_test = DermDatasetQnA(df_im=ham_clean_df,
-                            qna_mapping=questions_diag_mapping,
-                            root=root_path,
-                            test=True,
-                            transforms=eval_transform,)
-print('train size:', len(dataset_train), ',val size:', len(dataset_val), ',test size:', len(dataset_test))
-
-batch_size = 1000
-num_workers = 4
-
-train_dataloader = torch.utils.data.DataLoader(
-    dataset_train,
-    batch_size=batch_size,
-    shuffle=False,
-    num_workers=num_workers,
-    pin_memory=True
-)
-
-val_dataloader = torch.utils.data.DataLoader(
-    dataset_val,
-    batch_size=batch_size,
-    shuffle=False,
-    num_workers=num_workers,
-    pin_memory=True
-)
-test_dataloader = torch.utils.data.DataLoader(
-    dataset_test,
-    batch_size=batch_size,
-    shuffle=False,
-    num_workers=num_workers,
-    pin_memory=True
-)
-
-
-## Metrics
-# bleu_metric = load_metric("bleu")
-# rouge_metric = load_metric("rouge")
-bleu_metric = evaluate.load("bleu")
-rouge_metric = evaluate.load("rouge")
-
-
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-from transformers import BertModel, BertTokenizer, BertConfig, GPT2LMHeadModel
-from datasets import load_metric  # For BLEU and ROUGE
-from tqdm import tqdm
 
 
 # Training loop
@@ -236,17 +166,92 @@ def evaluate(model, dataloader, tokenizer, device):
 
 # Main training and evaluation script
 def main():
+
+    ## Prepping models
+    vision_model, eval_transform = get_encoder(model_name="PanDerm")
+    language_model = BertModel.from_pretrained("bert-base-uncased")
+    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    gpt_decoder = GPT2LMHeadModel.from_pretrained("gpt2")
+
+    model = MultimodalModel(vision_model=vision_model, language_model=language_model, gpt_decoder=gpt_decoder)
+
+    ## Prepping data loaders
+    # code for dl's here
+    ham_clean_df = pd.read_csv("../../HAM_clean.csv")
+
+    with open('data/questions_diag_mapping.json') as f:
+        questions_diag_mapping = json.load(f)
+        questions_diag_mapping.pop("SCC")
+        questions_diag_mapping.pop("UNK")
+        print(questions_diag_mapping.keys())
+
+    root_path = "/mount/studenten-temp1/users/yassir/datasets/HAM10000_clean/ISIC2018/"
+
+    percent_data = 1.0
+    dataset_train = DermDatasetQnA(df_im=ham_clean_df,
+                                qna_mapping=questions_diag_mapping,
+                                root=root_path,
+                                train=True,
+                                transforms=eval_transform,
+                                data_percent=percent_data)
+    dataset_val = DermDatasetQnA(df_im=ham_clean_df,
+                                qna_mapping=questions_diag_mapping,
+                                root=root_path,
+                                val=True,
+                                transforms=eval_transform,)
+    dataset_test = DermDatasetQnA(df_im=ham_clean_df,
+                                qna_mapping=questions_diag_mapping,
+                                root=root_path,
+                                test=True,
+                                transforms=eval_transform,)
+    print('train size:', len(dataset_train), ',val size:', len(dataset_val), ',test size:', len(dataset_test))
+
+    batch_size = 1000
+    num_workers = 4
+
+    train_dataloader = torch.utils.data.DataLoader(
+        dataset_train,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+
+    val_dataloader = torch.utils.data.DataLoader(
+        dataset_val,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+    test_dataloader = torch.utils.data.DataLoader(
+        dataset_test,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+
+
+    ## Metrics
+    # bleu_metric = load_metric("bleu")
+    # rouge_metric = load_metric("rouge")
+    bleu_metric = evaluate.load("bleu")
+    rouge_metric = evaluate.load("rouge")
+
+
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Initialize your multimodal model
-    model = MultimodalModel(vision_model, language_model).to(device)
+    # model = MultimodalModel(vision_model, language_model).to(device)
 
     # Prepare optimizer and loss function
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     criterion = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
 
     # Training and evaluation
-    num_epochs = 5
+    num_epochs = 10
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1}/{num_epochs}")
         train_loss = train(model, train_dataloader, optimizer, criterion, device)
