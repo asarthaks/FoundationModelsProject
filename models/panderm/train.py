@@ -108,10 +108,16 @@ from tqdm import tqdm
 
 
 
+## Metrics
+# bleu_metric = load_metric("bleu")
+# rouge_metric = load_metric("rouge")
+bleu_metric = evaluate.load("bleu")
+rouge_metric = evaluate.load("rouge")
+
 
 
 # Training loop
-def train(model, dataloader, optimizer, criterion, device):
+def train(model, dataloader, tokenizer, optimizer, criterion, device):
     model.train()
     total_loss = 0
     for batch in tqdm(dataloader, desc="Training"):
@@ -137,7 +143,7 @@ def train(model, dataloader, optimizer, criterion, device):
 
 
 # Evaluation loop
-def evaluate(model, dataloader, tokenizer, device):
+def evaluate_model(model, dataloader, tokenizer, device):
     model.eval()
     predictions, references = [], []
 
@@ -233,11 +239,7 @@ def main():
     )
 
 
-    ## Metrics
-    # bleu_metric = load_metric("bleu")
-    # rouge_metric = load_metric("rouge")
-    bleu_metric = evaluate.load("bleu")
-    rouge_metric = evaluate.load("rouge")
+
 
 
 
@@ -254,10 +256,10 @@ def main():
     num_epochs = 10
     for epoch in range(num_epochs):
         print(f"Epoch {epoch+1}/{num_epochs}")
-        train_loss = train(model, train_dataloader, optimizer, criterion, device)
+        train_loss = train(model, train_dataloader, tokenizer, optimizer, criterion, device)
         print(f"Training Loss: {train_loss:.4f}")
         
-        bleu_score, rouge_score = evaluate(model, val_dataloader, tokenizer, device)
+        bleu_score, rouge_score = evaluate_model(model, val_dataloader, tokenizer, device)
         print(f"BLEU Score: {bleu_score['bleu']:.4f}")
         print(f"ROUGE Score: {rouge_score}")
 
