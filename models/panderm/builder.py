@@ -4,6 +4,9 @@ import torch
 from torchvision import transforms
 from modeling_finetune import *
 import open_clip
+
+mode="server"
+
 def get_norm_constants(which_img_norm: str = 'imagenet'):
     print('normalization method: ',which_img_norm)
     constants_zoo = {
@@ -39,7 +42,10 @@ def get_eval_transforms(
 
 
 def get_encoder(model_name,which_img_norm='imagenet'):
-    roo_path='/code/PanDerm/linear_probe/model_weights/'
+    if mode=="local":
+        roo_path='/code/PanDerm/linear_probe/model_weights/'
+    else:
+        roo_path='/mount/studenten-temp1/users/yassir/model_weights/'
     # which_img_norm='imagenet'
     print('loading model checkpoint')
 

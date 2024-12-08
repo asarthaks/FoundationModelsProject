@@ -110,7 +110,7 @@ multimodal_model = MultimodalModel(vision_model=vision_model, language_model=lan
 # code for dl's here
 ham_clean_df = pd.read_csv("../../HAM_clean.csv")
 
-with open('questions_diag_mapping.json') as f:
+with open('data/questions_diag_mapping.json') as f:
     questions_diag_mapping = json.load(f)
     questions_diag_mapping.pop("SCC")
     questions_diag_mapping.pop("UNK")
@@ -125,11 +125,13 @@ dataset_train = DermDatasetQnA(df_im=ham_clean_df,
                             train=True,
                             transforms=eval_transform,
                             data_percent=percent_data)
-dataset_val = DermDatasetQnA(df=ham_clean_df,
+dataset_val = DermDatasetQnA(df_im=ham_clean_df,
+                            qna_mapping=questions_diag_mapping,
                             root=root_path,
                             val=True,
                             transforms=eval_transform,)
-dataset_test = DermDatasetQnA(df=ham_clean_df,
+dataset_test = DermDatasetQnA(df_im=ham_clean_df,
+                            qna_mapping=questions_diag_mapping,
                             root=root_path,
                             test=True,
                             transforms=eval_transform,)
