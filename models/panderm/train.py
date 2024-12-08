@@ -1,3 +1,6 @@
+import json
+import pandas as pd
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -9,6 +12,7 @@ from datasets import load_metric
 
 from builder import get_encoder
 from multimodal import MultimodalModel
+from data.derm_data import DermDatasetQnA
 
 # def train_model(model, train_loader, val_loader, tokenizer, device, num_epochs=5, lr=1e-4):
 #     """
@@ -103,6 +107,59 @@ multimodal_model = MultimodalModel(vision_model=vision_model, language_model=lan
 
 ## Prepping data loaders
 # code for dl's here
+ham_clean_df = pd.read_csv("../../HAM_clean.csv")
+
+with open('questions_diag_mapping.json') as f:
+    questions_diag_mapping = json.load(f)
+    questions_diag_mapping.pop("SCC")
+    questions_diag_mapping.pop("UNK")
+    print(questions_diag_mapping.keys())
+
+root_path = "/"
+
+percent_data = 1.0
+dataset_train = DermDatasetQnA(df_im=ham_clean_df,
+                            qna_mapping=questions_diag_mapping,
+                            root=root_path,
+                            train=True,
+                            transforms=eval_transform,
+                            data_percent=percent_data)
+dataset_val = DermDatasetQnA(df=ham_clean_df,
+                            root=root_path,
+                            val=True,
+                            transforms=eval_transform,)
+dataset_test = DermDatasetQnA(df=ham_clean_df,
+                            root=root_path,
+                            test=True,
+                            transforms=eval_transform,)
+print('train size:', len(dataset_train), ',val size:', len(dataset_val), ',test size:', len(dataset_test))
+
+batch_size = 1000
+num_workers = 4
+
+train_dataloader = torch.utils.data.DataLoader(
+    dataset_train,
+    batch_size=batch_size,
+    shuffle=False,
+    num_workers=num_workers,
+    pin_memory=True
+)
+
+val_dataloader = torch.utils.data.DataLoader(
+    dataset_val,
+    batch_size=batch_size,
+    shuffle=False,
+    num_workers=num_workers,
+    pin_memory=True
+)
+test_dataloader = torch.utils.data.DataLoader(
+    dataset_test,
+    batch_size=batch_size,
+    shuffle=False,
+    num_workers=num_workers,
+    pin_memory=True
+)
+
 
 ## Metrics
 bleu_metric = load_metric("bleu")
@@ -150,7 +207,7 @@ def evaluate(model, dataloader, tokenizer, device):
 
     with torch.no_grad():
         for batch in tqdm(dataloader, desc="Evaluating"):
-            image, question, target = batch
+            image, question, target, filename = batch
             image = image.to(device)
 
             # Tokenize the question

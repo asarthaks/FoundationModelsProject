@@ -113,24 +113,24 @@ class DermDatasetQnA(Dataset):
         im_path = str(self.root)+str(filename)
         # Use PIL to load the image directly in RGB format
         try:
-            x = Image.open(im_path).convert('RGB')
+            img = Image.open(im_path).convert('RGB')
         except IOError:
             print('Error opening file:', im_path)
-            x = None  # Or handle the error as appropriate for your application
+            img = None  # Or handle the error as appropriate for your application
 
         # print(x)
         # Apply transformations if any
-        if x is not None and self.transforms:
-            x = self.transforms(x)
+        if img is not None and self.transforms:
+            img = self.transforms(img)
             # if self.binary==True:
             #     y = self.multimodal_df.iloc[index]['binary_label']
             # else:
             #     y = self.multimodal_df.iloc[index]['label']
-            y = self.multimodal_df.iloc[index]["answer"]
+            answer = self.multimodal_df.iloc[index]["answer"]
         # Here we need to change x as image and question pair and y as answer. 
         # Need to make a custom class for the new multimodal dataset
-        x = (x, question)
-        return x,y,filename
+        
+        return img, question, answer, filename
 
     def __len__(self):
         return len(self.multimodal_df)
