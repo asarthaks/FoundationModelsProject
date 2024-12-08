@@ -1,8 +1,8 @@
 import timm
-from .timm_wrapper import TimmCNNEncoder
+from timm_wrapper import TimmCNNEncoder
 import torch
 from torchvision import transforms
-from models.modeling_finetune import *
+from modeling_finetune import *
 import open_clip
 def get_norm_constants(which_img_norm: str = 'imagenet'):
     print('normalization method: ',which_img_norm)

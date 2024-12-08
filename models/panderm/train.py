@@ -8,7 +8,8 @@ from tqdm import tqdm
 
 from transformers import BertModel
 from transformers import BertTokenizer
-from datasets import load_metric
+# from datasets import load_metric
+import evaluate
 
 from builder import get_encoder
 from multimodal import MultimodalModel
@@ -162,8 +163,10 @@ test_dataloader = torch.utils.data.DataLoader(
 
 
 ## Metrics
-bleu_metric = load_metric("bleu")
-rouge_metric = load_metric("rouge")
+# bleu_metric = load_metric("bleu")
+# rouge_metric = load_metric("rouge")
+bleu_metric = evaluate.load("bleu")
+rouge_metric = evaluate.load("rouge")
 
 
 import torch
