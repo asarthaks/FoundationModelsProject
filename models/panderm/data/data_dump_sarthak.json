@@ -129,7 +129,44 @@
             "Melanoma is a serious type of skin cancer that develops in the cells (melanocytes) that produce melanin, the pigment that gives your skin its color. Melanomas can develop anywhere on the body, but they most often develop in areas that have had exposure to the sun.\n\nCommon signs of melanoma include a new, unusual growth or a change in an existing mole. The ABCDE method may help you determine if a mole or a growth may be melanoma: Asymmetry, Border irregularity, Color changes, Diameter, and Evolving.\n\nMelanoma is primarily caused by intense, occasional UV exposure, especially in those who are genetically predisposed to the disease.\n\nMelanoma treatment options include surgery, immunotherapy, targeted therapy, chemotherapy, and radiation therapy. Early detection is critical, as melanoma is much harder to treat if it has spread to other parts of"
         ]
     ],
-    "NV": [],
+    "NV": [
+        [
+            "Do congenital melanocytic nevi have a high risk of malignant transformation?",
+            "Although classically it has been considered that CMN had a high risk of malignant transformation, this view has largely changed over the years. In the 1970s and 1980s, it was considered that the risk of developing melanoma within a CMN was about 20%, but estimates were imprecise because of small study sizes and selection bias, which overestimated the risk. However, subsequent series that included a more significant number of patients observed a markedly lower risk. A systematic review"
+        ],
+        [
+            "Why does my child have more and more moles?",
+            "Patients may acquire an increasing number of MN throughout childhood, and in some patients this increase is particularly striking (Fig. 4). The prevalence of AMN is related to various factors including age, sex, phototype, and intensity of sunlight exposure. Concerning age, few nevi are present in early childhood, but their number increases with time, especially from 12 years of age on, reaching a peak in the third decade of life. The difference in prevalence by sex is controversial."
+        ],
+        [
+            "What are the warning signs that a mole is becoming malignant?",
+            "The incidence of melanoma in children is much lower than in adults, and exceedingly rare in children younger than 10 years of age, so melanoma is not usually included among the main differential diagnoses in younger children. Complicating matters more, the clinical warning signs are also different, making it challenging to identify. Thus, the classic warning signs included in the acronym \u201cABCDE\u201d (asymmetry, border irregularity, color variation, diameter \u22656 mm, evolution) may be absent in up to"
+        ],
+        [
+            "Is it necessary that a dermatologist review all melanocytic nevi in children (congenital and acquired)?",
+            "Although it is difficult to calculate because of the high prevalence of MN in a healthy population, the estimated risk of MN becoming malignant is low, ranging from 0.0005% (or <1 in 200,000) before the age of 40 years, to 0.003% (1 in 33,000).18 In addition, melanoma arises as a de novo lesion in 70% of cases so it does not seem necessary to refer all patients with benign-looking MN to specialized care. Despite this, and although the risk of melanoma within MN in the general pediatric"
+        ],
+        [
+            "Are melanocytic nevi on the palms and soles more dangerous than those in other locations?",
+            "There is a widely held belief that MN in palms and soles have a higher risk of malignant transformation than those in other parts of the body, but current evidence does not support this. Acral melanomas are the least common type in the United States, representing 2% to 3% of all melanomas.47 Acral melanomas are the most prevalent group in Japan, where they account for 47% of all melanomas.48 Although in the White population the risk of suffering a melanoma is directly proportional to the total"
+        ],
+        [
+            "How often should melanocytic nevi be checked?",
+            "Patients with increased risk of melanoma should be reviewed periodically, along with clinical and dermoscopic follow-up of doubtful lesions, but it is uncertain what approach to take for children with CMN and AMN in the absence of warning signs. Many experts recommend an annual check-up of MN, whereas others suggest that patients request a follow-up visit only if they observe morphologic changes or discomfort in any of the lesions. Nevertheless, there is no scientific evidence to support the Is it better to be \u201csafe than sorry\u201d? (is it advisable to remove as many nevi as possible as soon as possible?)  There is strong evidence that the number of AMN is a significant risk factor for the development of melanoma but the effectiveness of surgical excision as a preventive measure is more than doubtful. It is logical to think that the greater the number of melanocytes, the greater the risk of malignant transformation of these cells, and therefore, the prophylactic surgical removal of MN would, in theory, have a potential therapeutic value. However, the question is whether this attitude is"
+        ],
+        [
+            "Are nevi that bulge worrisome?",
+            "Often, patients come to our office expressing their desire to remove exophytic lesions on the body, mostly on their trunk or scalp. The motivations are diverse, but in general, aesthetic criteria prevail and, secondarily, the discomfort caused by rubbing against clothing or during hairstyling. Descriptions of the natural progression of AMN pointing to their natural evolution toward elevation date back to the nineteenth century. This slow elevation from a nearly flat to raised lesion occurs"
+        ],
+        [
+            "How can I prevent malignant transformation of moles?",
+            "Intense sun exposure is a well-known risk factor for developing skin cancer. In particular, melanoma development is strongly related to repeated sunburns during childhood and adolescence, and therefore, implementing the appropriate strategies for sun protection is essential. However, a study performed in 2013 demonstrated that only 10% of students between 14 and 17 years of age applied sunscreen with an SPF greater than or equal to 15 while performing outdoor activities.60 Younger children are"
+        ],
+        [
+            "Which is the best sunscreen?",
+            "The importance of proper use of topical sunscreens in childhood to prevent the cumulative effect of solar radiation (UVA and UVB) on the skin is well known to parents and caregivers and raises a recurring question about the ideal product. Sunscreens contain chemical (organic) or physical (inorganic) compounds that block ultraviolet radiation. In general, physical or inorganic sunscreens are preferred in children to minimize the risks of sensitization and toxicity."
+        ]
+    ],
     "BCC": [
         [
             "What are the treatment options for basal cell carcinoma?",
@@ -288,9 +325,34 @@
         [
             "What is the prognosis for dermatofibroma?",
             "The prognosis for dermatofibroma is excellent as they are benign growths that do not turn cancerous. They are typically harmless and only require treatment if they become painful or are cosmetically undesirable. Recurrence after removal is rare but can occur."
-        ]
+        ],
+        
     ]
     ,
+        [
+            "What Is a Dermatofibroma?",
+            "A dermatofibroma is a harmless, nodular lesion that sits in the deeper layers of the skin. It is a firm bump and can range in colour from pink to brown."
+        ],
+        [
+            "Are They Dangerous?",
+            "Dermatofibromas are not dangerous or cancerous. They are benign nodules that sit under the skin, and it is not necessary to treat them. However, you may find the lesion annoying or unsightly and may choose to have it removed for this reason."
+        ],
+        [
+            "What Is the 'Pinch Test'?",
+            "Dermatofibromas can have a dimple or depression when pinched. As part of your clinical examination, your clinician may carry out this 'pinch test' to determine if your lesion is a dermatofibroma. At the Altruderm clinic, we will also carry out a dermatoscopic examination where the doctor assesses the lesion using magnification."
+        ],
+        [
+            "Is a Surgical Excision the Best Method of Removal?",
+            "If you decide that you would like to have your dermatofibroma removed then surgical excision, with adequate margins, is the best method of removal. This ensures that the dermatofibroma is unlikely to recur."
+        ],
+        [
+            "What Type of Anaesthetic Is Used for This Procedure?",
+            "Dermatofibroma removal is a minor surgical procedure carried out under local anaesthetic. The dermatofibroma is numbed by injection so you will not feel any pain when the lesion is removed. You will be awake and the doctor will check with you to ensure you do not feel any pain. As this procedure is carried out using local anaesthetic you will be able to return to your normal duties straight away, but avoiding any strenuous exercise."
+        ],
+        [
+            "What Is the Recommended Aftercare Following a Dermatofibroma Removal?",
+            "Following your procedure the area will have a dressing which should remain on and dry for 2 days. After this you should remove the dressing. If your sutures are dissolving, they will disappear over time. If your sutures are non-dissolving you will return to the clinic to have them removed. In either case, you are welcome to attend the clinic for a wound check at any time. The type of suture chosen for your procedure will depend on where the dermatofibroma is on the body."
+        ]
     "VASC": [
         [
             "What is a vascular lesion?",
