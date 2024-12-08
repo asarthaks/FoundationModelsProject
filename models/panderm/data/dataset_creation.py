@@ -3,9 +3,9 @@ import json
 
 
 
-qna_df = pd.read_csv("../../../combined_data.csv")
 
-isic_training_gt = pd.read_csv("../../../ISIC_2019_Training_GroundTruth.csv")
+
+isic_training_gt = pd.read_csv("../../../ISIC2018_Task3_Training_GroundTruth.csv")
 
 diagnosis_definitions = {
     "MEL": ["""Melanoma. Melanoma is a malignant neoplasm derived from melanocytes that may appear in different variants. If
@@ -42,33 +42,45 @@ structures known as red clods or lacunes.""", "Vascular lesion"],
     "UNK": ["Unknown", None]
 }
 
-question_count_dict = dict()
-data_json = dict()
-for diag, _ in diagnosis_definitions.items():
-    question_count_dict[diag] = 0
-    data_json[diag] = list()
+
+# # Prepping code, do not run, it was just used to create the initial file, after that we added questions 
+# # manually to the json file
+
+# qna_df = pd.read_csv("../../../combined_data.csv")
+
+# question_count_dict = dict()
+# data_json = dict()
+# for diag, _ in diagnosis_definitions.items():
+#     question_count_dict[diag] = 0
+#     data_json[diag] = list()
 
 
+# c = 0
+# for diag, value in diagnosis_definitions.items():
+#     if value[-1]:
+#         for idx, row in qna_df.iterrows():
+#             row_dict = row.to_dict()
+#             if value[-1].lower() in row_dict["prompt"].lower() or diag in row_dict["prompt"]:
+#                 c += 1
+#                 print("**** Match Found*****")
+#                 print("Key: {}".format(value[-1]))
+#                 print("Question: {}".format(row_dict["prompt"]))
+#                 print("Answer: {}".format(row_dict["response"]))
+#                 question_count_dict[diag] = question_count_dict.get(diag, 0) + 1
+#                 data_json[diag].append((row_dict["prompt"], row_dict["response"]))
 
-c = 0
-for diag, value in diagnosis_definitions.items():
-    if value[-1]:
-        for idx, row in qna_df.iterrows():
-            row_dict = row.to_dict()
-            if value[-1].lower() in row_dict["prompt"].lower() or diag in row_dict["prompt"]:
-                c += 1
-                print("**** Match Found*****")
-                print("Key: {}".format(value[-1]))
-                print("Question: {}".format(row_dict["prompt"]))
-                print("Answer: {}".format(row_dict["response"]))
-                question_count_dict[diag] = question_count_dict.get(diag, 0) + 1
-                data_json[diag].append((row_dict["prompt"], row_dict["response"]))
-
-with open('data_dump.json', 'w') as f:
-    json.dump(data_json, f)
+# with open('data_dump.json', 'w') as f:
+#     json.dump(data_json, f)
 
 
-print(c)
-print(question_count_dict)
+# print(c)
+# print(question_count_dict)
+
+# Because we are using the 2018 dataset, the two labels are not there SCC and UNK, so let's drop them
+with open('questions_diag_mapping.json') as f:
+    questions_diag_mapping = json.load(f)
+    questions_diag_mapping.pop("SCC")
+    questions_diag_mapping.pop("UNK")
+    print(questions_diag_mapping.keys())
 
 
