@@ -122,7 +122,7 @@ def train(model, dataloader, tokenizer, optimizer, criterion, device):
     total_loss = 0
     for batch in tqdm(dataloader, desc="Training"):
         image, question, target, filename  = batch
-        image, target = image.to(device), target.to(device)
+        image = image.to(device)
 
         # Tokenize the question and target
         question_tokens = tokenizer(question, return_tensors="pt", padding=True, truncation=True).to(device)
