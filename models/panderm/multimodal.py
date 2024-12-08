@@ -67,6 +67,9 @@ class MultimodalModel(nn.Module):
             for param in self.vision_model.blocks[-fine_tune_layers:].parameters():
                 param.requires_grad = True
 
+        # LM projection
+        self.text_projection  = nn.Linear(512, 768)
+
         # Cross-modal fusion mechanism
         self.cross_modal_fusion = CrossModalFusion(dim=512, num_heads=8)  # Example dimensions
 
@@ -76,6 +79,7 @@ class MultimodalModel(nn.Module):
         
         # Extract language features (CLS token from BERT)
         question_embedding = self.language_model(**question).last_hidden_state[:, 0, :]  # CLS token
+        question_embedding = self.text_projection(question_embedding)
 
         # Apply cross-modal fusion
         fused_features, _ = self.cross_modal_fusion(image_features, question_embedding.unsqueeze(1))
