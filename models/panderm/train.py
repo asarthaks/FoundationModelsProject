@@ -116,7 +116,7 @@ with open('data/questions_diag_mapping.json') as f:
     questions_diag_mapping.pop("UNK")
     print(questions_diag_mapping.keys())
 
-root_path = "/"
+root_path = "/mount/studenten-temp1/users/yassir/datasets/HAM10000_clean/ISIC2018/"
 
 percent_data = 1.0
 dataset_train = DermDatasetQnA(df_im=ham_clean_df,
