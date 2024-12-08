@@ -7,7 +7,7 @@ import torch.optim as optim
 from tqdm import tqdm
 
 from transformers import BertModel
-from transformers import BertTokenizer
+from transformers import BertModel, BertTokenizer, BertConfig, GPT2LMHeadModel
 # from datasets import load_metric
 import evaluate
 
