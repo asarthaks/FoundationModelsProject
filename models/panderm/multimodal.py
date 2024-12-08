@@ -15,9 +15,63 @@ class CrossModalFusion(nn.Module):
         self.cross_attention = nn.MultiheadAttention(embed_dim=dim, num_heads=num_heads)
 
     def forward(self, img_features, text_features):
+        # Expand text features to match image patches' sequence length
+        text_features = text_features.unsqueeze(1).expand(-1, img_features.size(1), -1)
+
+        # Reshape to [seq_len, batch_size, embed_dim] for MultiheadAttention
+        img_features = img_features.transpose(0, 1)
+        text_features = text_features.transpose(0, 1)
+
+        # Cross-attention: text queries attend to image features
+        attn_output, _ = self.cross_attention(text_features, img_features, img_features)
+
         # Cross-attention: text queries over image keys/values
-        return self.cross_attention(text_features, img_features, img_features)
+        return attn_output.transpose(0, 1)
     
+
+
+class MultimodalModel(nn.Module):
+    def __init__(self, vision_model, language_model, gpt_decoder, freeze_vision=True, fine_tune_layers=0):
+        super().__init__()
+        self.vision_model = vision_model
+        self.language_model = language_model
+        self.gpt_decoder = gpt_decoder
+
+        # Freeze PanDerm layers
+        if freeze_vision:
+            for param in self.vision_model.parameters():
+                param.requires_grad = False  # Freeze all layers initially
+
+            # Optionally fine-tune the last few transformer blocks
+            for param in self.vision_model.blocks[-fine_tune_layers:].parameters():
+                param.requires_grad = True
+
+        # LM projection
+        self.text_projection  = nn.Linear(768, 1024)
+
+        # Cross-modal fusion mechanism
+        self.cross_modal_fusion = CrossModalFusion(dim=1024, num_heads=8)  # Example dimensions
+
+    def forward(self, image, question, max_length=30):
+        # Extract vision features
+        image_features = self.vision_model.forward_features(image)
+        
+        # Extract language features (CLS token from BERT)
+        question_embedding = self.language_model(**question).last_hidden_state[:, 0, :]  # CLS token
+        question_embedding = self.text_projection(question_embedding)
+
+        # Apply cross-modal fusion
+        fused_features, _ = self.cross_modal_fusion(image_features, question_embedding)
+
+        # Use the decoder to generate text
+        outputs = self.gpt_decoder.generate(
+            input_ids=torch.zeros((fused_features.size(0), 1), dtype=torch.long).to(fused_features.device),
+            max_length=max_length,
+            encoder_hidden_states=fused_features,
+            encoder_attention_mask=None
+        )
+        return outputs
+
 
 # class MultimodalModel(nn.Module):
 #     def __init__(self, vision_model, language_model, freeze_vision=True, fine_tune_layers=0):
@@ -49,49 +103,6 @@ class CrossModalFusion(nn.Module):
 
 #         # Flatten and classify
 #         return self.fc(fused_features.squeeze(1))
-
-
-class MultimodalModel(nn.Module):
-    def __init__(self, vision_model, language_model, gpt_decoder, freeze_vision=True, fine_tune_layers=0):
-        super().__init__()
-        self.vision_model = vision_model
-        self.language_model = language_model
-        self.gpt_decoder = gpt_decoder
-
-        # Freeze PanDerm layers
-        if freeze_vision:
-            for param in self.vision_model.parameters():
-                param.requires_grad = False  # Freeze all layers initially
-
-            # Optionally fine-tune the last few transformer blocks
-            for param in self.vision_model.blocks[-fine_tune_layers:].parameters():
-                param.requires_grad = True
-
-        # LM projection
-        self.text_projection  = nn.Linear(512, 768)
-
-        # Cross-modal fusion mechanism
-        self.cross_modal_fusion = CrossModalFusion(dim=512, num_heads=8)  # Example dimensions
-
-    def forward(self, image, question, max_length=30):
-        # Extract vision features
-        image_features = self.vision_model.forward_features(image)
-        
-        # Extract language features (CLS token from BERT)
-        question_embedding = self.language_model(**question).last_hidden_state[:, 0, :]  # CLS token
-        question_embedding = self.text_projection(question_embedding)
-
-        # Apply cross-modal fusion
-        fused_features, _ = self.cross_modal_fusion(image_features, question_embedding.unsqueeze(1))
-
-        # Use the decoder to generate text
-        outputs = self.gpt_decoder.generate(
-            input_ids=torch.zeros((fused_features.size(0), 1), dtype=torch.long).to(fused_features.device),
-            max_length=max_length,
-            encoder_hidden_states=fused_features,
-            encoder_attention_mask=None
-        )
-        return outputs
 
 
     

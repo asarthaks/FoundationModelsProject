@@ -119,6 +119,7 @@ rouge_metric = evaluate.load("rouge")
 # Training loop
 def train(model, dataloader, tokenizer, optimizer, criterion, device):
     model.train()
+    model = model.to(device)
     total_loss = 0
     for batch in tqdm(dataloader, desc="Training"):
         image, question, target, filename  = batch
@@ -212,7 +213,7 @@ def main():
                                 transforms=eval_transform,)
     print('train size:', len(dataset_train), ',val size:', len(dataset_val), ',test size:', len(dataset_test))
 
-    batch_size = 1000
+    batch_size = 64
     num_workers = 4
 
     train_dataloader = torch.utils.data.DataLoader(
@@ -251,6 +252,8 @@ def main():
     # Prepare optimizer and loss function
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     criterion = nn.CrossEntropyLoss(ignore_index=tokenizer.pad_token_id)
+
+    torch.cuda.empty_cache()
 
     # Training and evaluation
     num_epochs = 10
