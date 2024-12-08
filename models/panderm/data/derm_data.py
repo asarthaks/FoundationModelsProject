@@ -88,11 +88,12 @@ class DermDatasetQnA(Dataset):
             row_dict = row.to_dict()
             diag = row_dict["dx"].upper()
             qnas = qna_mapping[diag]
-            question = qnas[0]
-            answer = qnas[-1]
-            row_dict["question"] = question
-            row_dict["answer"] = answer
-            multimodal_data_list.append(row_dict)
+            for qna in qnas:
+                question = qna[0]
+                answer = qna[-1]
+                row_dict["question"] = question
+                row_dict["answer"] = answer
+                multimodal_data_list.append(row_dict)
 
         multimodal_df = pd.DataFrame(multimodal_data_list)
         # Shuffling the dataframe
