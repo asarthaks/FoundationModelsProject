@@ -243,7 +243,7 @@ def main():
 
 
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
     # Initialize your multimodal model
     # model = MultimodalModel(vision_model, language_model).to(device)
