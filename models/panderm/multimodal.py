@@ -61,7 +61,7 @@ class MultimodalModel(nn.Module):
         question_embedding = self.text_projection(question_embedding)
 
         # Apply cross-modal fusion
-        fused_features, _ = self.cross_modal_fusion(image_features, question_embedding)
+        fused_features = self.cross_modal_fusion(image_features, question_embedding)
 
         # Use the decoder to generate text
         outputs = self.gpt_decoder.generate(
