@@ -19,7 +19,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from transformers import BertModel, BertTokenizer, BertConfig, GPT2LMHeadModel
-from datasets import load_metric  # For BLEU and ROUGE
+# from datasets import load_metric  # For BLEU and ROUGE
 from tqdm import tqdm
 
 
