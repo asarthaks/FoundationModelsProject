@@ -65,7 +65,7 @@ Questions: "What is the diagnosis of this lesion?"
 Filename: ISIC_0024329
 ```
 
-## 📌 Notes
+## Notes
 - Ensure you have the dataset in the correct location (`data/` folder).
 - The script assumes the dataset follows the `HAM_clean.csv` format.
 - GPU support is enabled automatically if available.
