@@ -10,9 +10,9 @@ from transformers import BertModel, BertTokenizer,DistilBertModel, DistilBertTok
 
 import torch
 from panderm.builder import get_encoder
-from multimodals.multimodal_CrossAtt import MultimodalModel as cross_att_model
-from multimodals.multimodal_UNITER import MultimodalModel as uniter_model
-from multimodals.multimodal_ViLT import MultimodalModel as vilt_model
+from multimodels.multimodel_CrossAtt import MultimodalModel as cross_att_model
+from multimodels.multimodel_UNITER import MultimodalModel as uniter_model
+from multimodels.multimodel_ViLT import MultimodalModel as vilt_model
 
 from data.derm_data import DermDatasetQnA
 
