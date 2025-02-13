@@ -45,7 +45,7 @@ def get_encoder(model_name,which_img_norm='imagenet'):
     if mode=="local":
         roo_path='/code/PanDerm/linear_probe/model_weights/'
     else:
-        roo_path='/mount/studenten-temp1/users/yassir/model_weights/'
+        roo_path='/mount/users/yassir/model_weights/'
     # which_img_norm='imagenet'
     print('loading model checkpoint')
 

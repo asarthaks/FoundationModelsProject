@@ -1,9 +1,21 @@
+"""
+Script Name: dataset_creation.py
+Author: Sarthak Singh, Yassir El Attar
+Date: 2024-10-29
+Description:
+    This script reads a CSV file, and map the skin lesion abbreviations with their corresponding definition.
+    It reads the csv file from the original dataset designed for PanDerm and outputs a .json file containing the mapping.
+    Two of the skin lesions were dropped because of lack of related textual data.
+    
+
+Dependencies:
+    - pandas
+    - json
+
+"""
+
 import pandas as pd
 import json
-
-
-
-
 
 isic_training_gt = pd.read_csv("../../../ISIC2018_Task3_Training_GroundTruth.csv")
 
@@ -15,13 +27,13 @@ anatomic site.""", "Melanoma"],
 contrast to melanoma they are usually symmetric with regard to the distribution of color and structure""", "Melanocytic nevus"],
     "BCC": ["""Basal cell carcinoma. Basal cell carcinoma is a common variant of epithelial skin cancer that rarely metastasizes but grows
 destructively if untreated. It appears in different morphologic variants (flat, nodular, pigmented, cystic).""", "Basal cell carcinoma"],
-    "AK": ["""Actinic keratosis. Actinic Keratoses (Solar Keratoses) and Intraepithelial Carcinoma (Bowen’s disease) are common noninvasive, variants of squamous cell carcinoma that can be treated locally without surgery. Some authors
+    "AK": ["""Actinic keratosis. Actinic Keratoses (Solar Keratoses) and Intraepithelial Carcinoma (Bowen's disease) are common noninvasive, variants of squamous cell carcinoma that can be treated locally without surgery. Some authors
 regard them as precursors of squamous cell carcinomas and not as actual carcinomas. There is, however,
-agreement that these lesions may progress to invasive squamous cell carcinoma – which is usually not
-pigmented. Both neoplasms commonly show surface scaling and commonly are devoid of pigment. Actinic keratoses are more common on the face and Bowen’s disease is more common on other body
+agreement that these lesions may progress to invasive squamous cell carcinoma - which is usually not
+pigmented. Both neoplasms commonly show surface scaling and commonly are devoid of pigment. Actinic keratoses are more common on the face and Bowen's disease is more common on other body
 sites. Because both types are induced by UV-light the surrounding skin is usually typified by severe sun
-damaged except in cases of Bowen’s disease that are caused by human papilloma virus infection and not
-by UV. Pigmented variants exists for Bowen’s disease and for actinic keratoses.""", "Actinic keratosis"],
+damaged except in cases of Bowen's disease that are caused by human papilloma virus infection and not
+by UV. Pigmented variants exists for Bowen's disease and for actinic keratoses.""", "Actinic keratosis"],
     "BKL": ["""Benign keratosis. "Benign keratosis" is a generic class that includes seborrheic keratoses ("senile wart"), solar lentigo - which
 can be regarded a flat variant of seborrheic keratosis - and lichen-planus like keratoses (LPLK), which
 corresponds to a seborrheic keratosis or a solar lentigo with inflammation and regression.  The three
@@ -42,49 +54,9 @@ structures known as red clods or lacunes.""", "Vascular lesion"],
     "UNK": ["Unknown", None]
 }
 
-
-# # Prepping code, do not run, it was just used to create the initial file, after that we added questions 
-# # manually to the json file
-
-# qna_df = pd.read_csv("../../../combined_data.csv")
-
-# question_count_dict = dict()
-# data_json = dict()
-# for diag, _ in diagnosis_definitions.items():
-#     question_count_dict[diag] = 0
-#     data_json[diag] = list()
-
-
-# c = 0
-# for diag, value in diagnosis_definitions.items():
-#     if value[-1]:
-#         for idx, row in qna_df.iterrows():
-#             row_dict = row.to_dict()
-#             if value[-1].lower() in row_dict["prompt"].lower() or diag in row_dict["prompt"]:
-#                 c += 1
-#                 print("**** Match Found*****")
-#                 print("Key: {}".format(value[-1]))
-#                 print("Question: {}".format(row_dict["prompt"]))
-#                 print("Answer: {}".format(row_dict["response"]))
-#                 question_count_dict[diag] = question_count_dict.get(diag, 0) + 1
-#                 data_json[diag].append((row_dict["prompt"], row_dict["response"]))
-
-# with open('data_dump.json', 'w') as f:
-#     json.dump(data_json, f)
-
-
-# print(c)
-# print(question_count_dict)
-
 # Because we are using the 2018 dataset, the two labels are not there SCC and UNK, so let's drop them
 with open('questions_diag_mapping.json') as f:
     questions_diag_mapping = json.load(f)
     questions_diag_mapping.pop("SCC")
     questions_diag_mapping.pop("UNK")
     print(questions_diag_mapping.keys())
-
-
-
-
-
-

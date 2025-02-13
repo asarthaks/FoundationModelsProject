@@ -123,10 +123,6 @@ class DermDatasetQnA(Dataset):
         # Apply transformations if any
         if img is not None and self.transforms:
             img = self.transforms(img)
-            # if self.binary==True:
-            #     y = self.multimodal_df.iloc[index]['binary_label']
-            # else:
-            #     y = self.multimodal_df.iloc[index]['label']
             answer = self.multimodal_df.iloc[index]["answer"]
         # Here we need to change x as image and question pair and y as answer. 
         # Need to make a custom class for the new multimodal dataset
